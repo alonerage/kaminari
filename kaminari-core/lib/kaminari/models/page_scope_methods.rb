@@ -26,7 +26,7 @@ module Kaminari
       num = num.to_i
       raise ArgumentError, "padding must not be negative" if num < 0
       @_padding = num
-      where("id > ?", offset_value + @_padding)
+      offset(offset_value + @_padding)
     end
 
     # Total number of pages
