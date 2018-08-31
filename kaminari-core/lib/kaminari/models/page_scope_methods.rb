@@ -11,9 +11,9 @@ module Kaminari
       elsif n.zero?
         limit(n)
       elsif max_per_page && (max_per_page < n)
-        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
+        limit(max_per_page).where("id > ?", offset_value / limit_value * max_per_page)
       else
-        limit(n).offset(offset_value / limit_value * n)
+        limit(n).where("id > ?", offset_value / limit_value * n)
       end
     end
 
@@ -26,7 +26,7 @@ module Kaminari
       num = num.to_i
       raise ArgumentError, "padding must not be negative" if num < 0
       @_padding = num
-      offset(offset_value + @_padding)
+      where("id > ?", offset_value + @_padding)
     end
 
     # Total number of pages
