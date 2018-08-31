@@ -13,7 +13,7 @@ module Kaminari
       elsif max_per_page && (max_per_page < n)
         limit(max_per_page).where("id > ?", offset_value / limit_value * max_per_page)
       else
-        limit(n).where("id > ?", offset_value / limit_value * n)
+        limit(n).where("id > ?", offset_value.to_i / limit_value * n)
       end
     end
 
