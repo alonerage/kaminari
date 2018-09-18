@@ -18,7 +18,7 @@ module Kaminari
           min_id = max_id - per_page
 
 
-          limit(per_page).where("%s.id BETWEEN ? AND ?" % self.table_name, max_id, min_id).extending do
+          limit(per_page).where("%s.id BETWEEN ? AND ?" % self.table_name, min_id, max_id).extending do
             include Kaminari::ActiveRecordRelationMethods
             include Kaminari::PageScopeMethods
           end
