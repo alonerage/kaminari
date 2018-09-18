@@ -15,7 +15,7 @@ module Kaminari
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
           offset_val = per_page * ((num.to_i - 1) < 0 ? 0 : num)
 
-          limit(per_page).where("id > %i" % self.last.id - offset_val)).extending do
+          limit(per_page).where("id > %i" % self.last.id - offset_val).extending do
             include Kaminari::ActiveRecordRelationMethods
             include Kaminari::PageScopeMethods
           end
