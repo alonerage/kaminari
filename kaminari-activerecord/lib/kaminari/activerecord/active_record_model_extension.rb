@@ -13,8 +13,8 @@ module Kaminari
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
         def self.#{Kaminari.config.page_method_name}(num = nil)
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
-          max_id = self.select("%s.id AS max_id" % self.table_name).order("id desc").limit(1)[0]["max_id"] - (per_page * num.to_i)
 
+          max_id = self.select("%s.id AS max_id" % self.table_name).order("id desc").limit(1)[0]["max_id"].to_i - (per_page * num.to_i)
           min_id = max_id - per_page
 
 
