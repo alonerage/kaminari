@@ -15,7 +15,7 @@ module Kaminari
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
           max_id = self.select("%s.id AS max_id" % self.table_name).order("id desc").limit(1)[0]["max_id"] - (per_page * num.to_i)
 
-          min_id = (per_page * 2) * num.to_i #
+          min_id = max_id - per_page
 
 
           limit(per_page).where("%s.id BETWEEN ? AND ?" % self.table_name, max_id, min_id).extending do
