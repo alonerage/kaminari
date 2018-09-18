@@ -13,9 +13,9 @@ module Kaminari
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
         def self.#{Kaminari.config.page_method_name}(num = nil)
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
-          offset_val = per_page * ((num.to_i - 1) < 0 ? 0 : num)
+          offset_val = per_page * ((num.to_i - 1) < 0 ? 0 : num.to_i)
 
-          limit(per_page).where("id > %i" % self.last.id - offset_val).extending do
+          limit(per_page).where("id > %i" % self.last.id.to_i - offset_val.to_i).extending do
             include Kaminari::ActiveRecordRelationMethods
             include Kaminari::PageScopeMethods
           end
