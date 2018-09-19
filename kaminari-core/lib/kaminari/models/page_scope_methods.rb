@@ -11,9 +11,9 @@ module Kaminari
       elsif n.zero?
         limit(n)
       elsif max_per_page && (max_per_page < n)
-        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
+        limit(max_per_page).custom_offset(offset_value / limit_value * max_per_page)
       else
-        limit(n).offset(offset_value / limit_value * n)
+        limit(n).custom_offset(num / limit_value * n)
       end
     end
 
@@ -26,7 +26,7 @@ module Kaminari
       num = num.to_i
       raise ArgumentError, "padding must not be negative" if num < 0
       @_padding = num
-      offset(offset_value + @_padding)
+      custom_offset_value(num)
     end
 
     # Total number of pages
@@ -43,7 +43,7 @@ module Kaminari
 
     # Current page number
     def current_page
-      offset_without_padding = offset_value
+      offset_without_padding = custom_offset_value(num)
       offset_without_padding -= @_padding if defined?(@_padding) && @_padding
       offset_without_padding = 0 if offset_without_padding < 0
 
@@ -80,6 +80,25 @@ module Kaminari
     # Out of range of the collection?
     def out_of_range?
       current_page > total_pages
+    end
+
+
+
+    # custom methods to rewrite for work with id
+    def custom_offset(number)
+      # number to offset
+      max = max_id - number
+      min = max - @_per #custom_offset_value(number)
+      where("id <= %i AND id > %i" % [max_id, min_id])
+    end
+
+    def custom_offset_value(num = 1)
+      offset_val = @_per * ((num.to_i - 1) < 0 ? 0 : num.to_i)
+      # offset_value || (num * @_per)
+    end
+
+    def max_id
+      select(:id).last.id
     end
   end
 end
