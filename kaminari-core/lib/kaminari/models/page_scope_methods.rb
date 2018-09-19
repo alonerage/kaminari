@@ -89,7 +89,7 @@ module Kaminari
       # number to offset
       max = max_id - number
       min = max - @_per #custom_offset_value(number)
-      where("id <= %i AND id > %i" % [max_id, min_id])
+      where("id <= %i AND id > %i" % [max, min])
     end
 
     def custom_offset_value(num = 1)
